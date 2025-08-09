@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>For Petra</title>
+<style>
+/* Keep your existing CSS from the last working version */
+</style>
+</head>
+<body>
+<main>
+  <section class="cards">
+    <article class="card"><div class="icon">🔡</div><h3 class="title">LoveWord Grid</h3><p class="desc">Find 5 hidden love words</p><button class="btn" data-open="words">Play</button></article>
+    <article class="card"><div class="icon">🥰</div><h3 class="title">Blushing Snake</h3><p class="desc">Eat hearts, grow longer</p><button class="btn" data-open="snake">Play</button></article>
+    <article class="card"><div class="icon">❤️</div><h3 class="title">Heart Catcher</h3><p class="desc">Catch falling hearts</p><button class="btn" data-open="catch">Play</button></article>
+    <article class="card"><div class="icon">🔒💗</div><h3 class="title">Love Lock</h3><p class="desc">Crack a 3-digit code using clues</p><button class="btn" data-open="lock">Play</button></article>
+  </section>
+
+  <!-- Modals for each game (full HTML from last version) -->
+  <section id="modal-words" class="modal"> <!-- LoveWord Grid HTML --> </section>
+  <section id="modal-snake" class="modal"> <!-- Blushing Snake HTML --> </section>
+  <section id="modal-catch" class="modal"> <!-- Heart Catcher HTML --> </section>
+  <section id="modal-lock" class="modal"> <!-- Love Lock HTML --> </section>
+</main>
+<script>
+// Insert all JS logic from the last version, then add touch controls:
+
+// For Snake: swipe detection
+function addSwipeControls(onSwipe){
+  let startX, startY;
+  document.addEventListener('touchstart', e=>{
+    const t = e.touches[0]; startX=t.clientX; startY=t.clientY;
+  });
+  document.addEventListener('touchend', e=>{
+    const t = e.changedTouches[0];
+    const dx = t.clientX - startX;
+    const dy = t.clientY - startY;
+    if(Math.abs(dx) > Math.abs(dy)) onSwipe(dx>0?'right':'left');
+    else onSwipe(dy>0?'down':'up');
+  });
+}
+// Call this in Snake init: addSwipeControls(dir=>{/* set direction accordingly */});
+
+// For Heart Catcher: touch move for basket
+function addTouchMoveForBasket(basketObj, canvas){
+  canvas.addEventListener('touchmove', e=>{
+    const t = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    basketObj.x = t.clientX - rect.left - basketObj.w/2;
+  });
+}
+
+// For LoveWord Grid: tap selects letters
+function addTouchSelectGrid(gridEl, onSelect){
+  gridEl.addEventListener('touchstart', e=>{
+    const target = e.target.closest('.tile');
+    if(target) onSelect(target);
+  });
+}
+</script>
+</body>
+</html>
